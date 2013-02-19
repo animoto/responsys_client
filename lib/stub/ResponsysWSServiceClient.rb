@@ -949,3 +949,22 @@ parameters = nil
 puts obj.mergeIntoProfileExtension(parameters)
 
 
+
+# SYNOPSIS
+#   retrieveProfileExtensionRecords(parameters)
+#
+# ARGS
+#   parameters      retrieveProfileExtensionRecords - {urn:ws.rsys.com}retrieveProfileExtensionRecords
+#
+# RETURNS
+#   parameters      retrieveProfileExtensionRecordsResponse - {urn:ws.rsys.com}retrieveProfileExtensionRecordsResponse
+#
+# RAISES
+#   fault           UnexpectedErrorFault - {urn:fault.ws.rsys.com}UnexpectedErrorFault
+#   fault           ListExtensionFault - {urn:fault.ws.rsys.com}ListExtensionFault
+#
+parameters = nil
+puts obj.retrieveProfileExtensionRecords(parameters)
+
+
+

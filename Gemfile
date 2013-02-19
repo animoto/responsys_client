@@ -1,7 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'rake'
-gem 'echoe'
-gem 'mocha'
-
+# Specify your gem's dependencies in sundawg_responsys_client.gemspec
 gemspec

@@ -42,14 +42,14 @@ module SunDawg
         @responsys_client.wiredump_dev = options[:wiredump_dev] if options[:wiredump_dev]
 
         self.timeout_threshold = options[:timeout_threshold] || 180
-      end 
+      end
 
       def timeout_threshold=(secs)
         # Sets the timeout on the internal responsys http client according
         # to Travis' research in case 15230.
         @responsys_client.options['protocol.http.connect_timeout'] = secs
         @responsys_client.options['protocol.http.send_timeout'] = secs
-        @responsys_client.options['protocol.http.receive_timeout']  = secs
+        @responsys_client.options['protocol.http.receive_timeout'] = secs
 
         @timeout_threshold = secs
       end
@@ -70,19 +70,19 @@ module SunDawg
         session_header_request.sessionId = @session_id
         @responsys_client.headerhandler.add session_header_request
       end
-      
+
       def logout
         begin
           logout_request = Logout.new
           @responsys_client.logout logout_request
         ensure
-          @session_id = nil 
+          @session_id = nil
         end
       end
 
       def list_folders
         with_session do
-          @responsys_client.listFolders ListFolders.new 
+          @responsys_client.listFolders ListFolders.new
         end
       end
 
@@ -101,12 +101,12 @@ module SunDawg
           table.folderName = folder_name
           table.objectName = list_name
           record_data = RecordData.new
-          record_data.fieldNames = members.first.keys 
+          record_data.fieldNames = members.first.keys
           record_data.records = members.map do |member|
-            record_data.fieldNames.map do |field| 
+            record_data.fieldNames.map do |field|
               member[field]
-            end 
-          end 
+            end
+          end
           insert_on_no_match = true
           update_on_match = UpdateOnMatch::REPLACE_ALL
           merge = MergeTableRecordsWithPK.new(table, record_data, insert_on_no_match, update_on_match)
@@ -121,9 +121,9 @@ module SunDawg
           table.folderName = folder_name
           table.objectName = list_name
           record_data = RecordData.new
-          record_data.fieldNames = members.first.keys 
+          record_data.fieldNames = members.first.keys
           record_data.records = members.map do |member|
-            record_data.fieldNames.map do |field| 
+            record_data.fieldNames.map do |field|
               member[field]
             end
           end
@@ -132,9 +132,20 @@ module SunDawg
           update_on_match = UpdateOnMatch::REPLACE_ALL
           merge = MergeIntoProfileExtension.new(table, record_data, query_column, insert_on_no_match, update_on_match)
           @responsys_client.mergeIntoProfileExtension(merge)
-        end 
+        end
       end
 
+      #query column currently only supports RIID, so query values should only be as list of RIIDs
+      def get_profile_extension_table(folder_name, list_name, field_list, query_values, query_column='RIID')
+        with_session do
+          table = InteractObject.new
+          table.folderName = folder_name
+          table.objectName = list_name
+
+          query = RetrieveProfileExtensionRecords.new(table, query_column, field_list, query_values)
+          @responsys_client.retrieveProfileExtensionRecords(query)
+        end
+      end
 
       def save_members(folder_name, list_name, members, attributes = SunDawg::Responsys::Member.fields)
         raise MethodsNotSupportedError unless SunDawg::Responsys::Member.fields.include?(:email_address) && SunDawg::Responsys::Member.fields.include?(:email_permission_status) && SunDawg::Responsys::Member.fields.include?(:customer_id)
@@ -168,8 +179,8 @@ module SunDawg
         with_session do
           launch_campaign = LaunchCampaign.new
           interact_object = InteractObject.new
-          interact_object.folderName = folder_name 
-          interact_object.objectName = campaign_name 
+          interact_object.folderName = folder_name
+          interact_object.objectName = campaign_name
           launch_campaign.campaign = interact_object
           @responsys_client.launchCampaign launch_campaign
         end
@@ -207,7 +218,7 @@ module SunDawg
             optional_data = OptionalData.new
             optional_data.name = k
             v.gsub!(/[[:cntrl:]]/, ' ') if v.is_a? String
-            optional_data.value = v 
+            optional_data.value = v
             recipient_data.optionalData << optional_data
           end
 
@@ -313,7 +324,7 @@ module SunDawg
           end
         ensure
           with_timeout do
-            logout unless @keep_alive 
+            logout unless @keep_alive
           end
         end
       end

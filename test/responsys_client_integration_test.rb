@@ -99,6 +99,25 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       response.each{ |res| assert_equal '', res.errorMessage }
     end 
 
+    # This assumes you have a Profile Extension Table (PET) called gem_fire in the Test_Gem folder.
+    # This also assumes that RIID_ is the match column for Test_Gem. The value for RIID_ should
+    # be incordance to that of in the corresponding Profile List for Test_Gem.
+    # JPJ_1 Text Field
+    # JPJ_2 Text Field
+    def test_get_profile_extension_table
+      field_list = ['JPJ_1', 'JPJ_2']
+      response = @client.get_profile_extension_table(FOLDER_NAME, 'gem_fire', field_list, '511793', 'RIID')
+      result = response.recipientResult
+      response.each { |res| assert_equal '', res.errorMessage }
+
+      result.should == {
+          'JPJ_2' => "James Bond",
+          'JPJ_1' => "007",
+          'RIID_' => "511793"
+      }
+
+    end
+
     def test_trigger_custom_event
       list_name  =  'staging_CONTACTS_LIST'
       folder_name = 'Test_Staging'

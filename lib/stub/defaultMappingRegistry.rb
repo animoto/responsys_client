@@ -2012,6 +2012,25 @@ module DefaultMappingRegistry
   )
 
   LiteralRegistry.register(
+    :class => SunDawg::Responsys::RetrieveProfileExtensionRecords,
+    :schema_name => XSD::QName.new(NsWsRsysCom, "retrieveProfileExtensionRecords"),
+    :schema_element => [
+      ["profileExtension", "SunDawg::Responsys::InteractObject"],
+      ["queryColumn", "SunDawg::Responsys::QueryColumn"],
+      ["fieldList", "SOAP::SOAPString[]", [1, nil]],
+      ["idsToRetrieve", "SOAP::SOAPString[]", [1, nil]]
+    ]
+  )
+
+  LiteralRegistry.register(
+    :class => SunDawg::Responsys::RetrieveProfileExtensionRecordsResponse,
+    :schema_name => XSD::QName.new(NsWsRsysCom, "retrieveProfileExtensionRecordsResponse"),
+    :schema_element => [
+      ["result", "SOAP::Mapping::Object"]
+    ]
+  )
+
+  LiteralRegistry.register(
     :class => SunDawg::Responsys::AccountFault,
     :schema_name => XSD::QName.new(NsFaultWsRsysCom, "AccountFault"),
     :schema_element => [

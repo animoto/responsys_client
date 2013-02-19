@@ -2268,8 +2268,47 @@ module SunDawg
         @recipientResult = recipientResult
       end      
     end
+    
+ # {urn:ws.rsys.com}retrieveProfileExtensionRecords
+    #   listExtension - InteractObject
+    #   queryColumn - QueryColumn
+    #   fieldList - string[]
+    #   idsToRetrieve - string
+    class RetrieveProfileExtensionRecords
+      #@@schema_type = "retrieveProfileExtensionRecords"
+      #@@schema_ns = "urn:ws.rsys.com"
+      #@@schema_qualified = "type"
+      #@@schema_element = [[ "profileExtension", "InteractObject"], ["queryColumn", "QueryColumn"], ["fieldList", "SOAP::SOAPString"], ["idsToRetrieve", "SOAP::SOAPString"]]
 
-    module RubyFriendlyMethods
+      attr_accessor :listExtension
+      attr_accessor :queryColumn
+      attr_accessor :fieldList
+      attr_accessor :idsToRetrieve
+
+      def initialize(profileExtension = nil, queryColumn = nil, fieldList = [], idsToRetrieve = [])
+        @profileExtension = profileExtension
+        @queryColumn = queryColumn
+        @fieldList = fieldList
+        @idsToRetrieve = idsToRetrieve
+      end
+    end
+
+ # {urn:ws.rsys.com}retrieveProfileExtensionRecordsResponse
+    class RetrieveProfileExtensionRecordsResponse
+      #@@schema_type = "retrieveProfileExtensionRecordsResponse"
+      #@@schema_ns = "urn:ws.rsys.com"
+      #@@schema_qualified = "true"
+      #@@schema_element = [["recordData", "RecordData[]"]]
+
+      attr_accessor :recordData
+
+      def initialize(response)
+        record_data = response.result['recordData']
+        @recordData = RecordData.new(record_data['fieldNames'], record_data['records'])
+      end
+    end
+
+       module RubyFriendlyMethods
       def exception_code
         @exceptionCode
       end
