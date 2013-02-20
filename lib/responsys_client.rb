@@ -21,6 +21,22 @@ module SunDawg
       class MethodsNotSupportedError < StandardError
       end
 
+      class ResponsysRecord
+        attr_reader :field_names, :records, :to_hash
+
+        def initialize record_data
+          @field_names = record_data.fieldNames
+          @records =[]
+          record_iterator = record_data.records.respond_to?(:fieldValues) ? record_data.records.fieldValues : record_data.records
+          record_iterator.each do |column|
+            @records << Array(column.map)
+          end
+          @to_hash = Hash[@field_names.zip(@records)]
+
+        end
+
+      end
+
       attr_reader :session_id
       attr_reader :timeout_threshold
       attr_accessor :keep_alive
@@ -136,15 +152,37 @@ module SunDawg
       end
 
       #query column currently only supports RIID, so query values should only be as list of RIIDs
-      def get_profile_extension_table(folder_name, list_name, field_list, query_values, query_column='RIID')
+      def get_profile_extension_table(folder_name, table_name, field_list, query_values, query_column='RIID')
+        response = ''
         with_session do
           table = InteractObject.new
           table.folderName = folder_name
-          table.objectName = list_name
+          table.objectName = table_name
 
           query = RetrieveProfileExtensionRecords.new(table, query_column, field_list, query_values)
-          @responsys_client.retrieveProfileExtensionRecords(query)
+          response = @responsys_client.retrieveProfileExtensionRecords(query)
         end
+        ResponsysRecord.new(response.result.recordData)
+      end
+
+
+      def get_list_members(folder_name, list_name, field_list, query_values, query_column='RIID')
+        response = ''
+        with_session do
+          list = InteractObject.new
+          list.folderName = folder_name
+          list.objectName = list_name
+
+          query = RetrieveListMembers.new(list, query_column, field_list, query_values)
+          response = @responsys_client.retrieveListMembers(query)
+
+        end
+        ResponsysRecord.new(response.result.recordData)
+      end
+
+      def get_RIID_from_cust_id(folder_name, list_name, customer_ids)
+        record = get_list_members(folder_name, list_name, ['RIID_'], [customer_ids], 'CUSTOMER_ID')
+        record.records[0]
       end
 
       def save_members(folder_name, list_name, members, attributes = SunDawg::Responsys::Member.fields)
@@ -337,6 +375,7 @@ module SunDawg
           yield
         rescue SOAP::FaultError => e
           inner_e = e.detail[e.faultstring.data]
+          puts e.faultstring.data
           raise inner_e if inner_e
           raise e
         end
