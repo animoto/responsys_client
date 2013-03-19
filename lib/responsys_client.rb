@@ -27,12 +27,27 @@ module SunDawg
         def initialize record_data
           @field_names = record_data.fieldNames
           @records =[]
-          record_iterator = record_data.records.respond_to?(:fieldValues) ? record_data.records.fieldValues : record_data.records
+          record_iterator = record_data.records.respond_to?(:fieldValues) ? record_data.records.fieldValues : record_data.records[0]
           record_iterator.each do |column|
             @records << Array(column.map)
           end
           @to_hash = Hash[@field_names.zip(@records)]
 
+        end
+
+        #lower case symbol of field name
+        def method_missing(meth, *args, &block)
+          record = meth.to_s.upcase
+          if @field_names.include? record
+            value = @to_hash[record]
+            return value.size == 1 ? value[0] : value
+          elsif @field_names.include? record +'_'
+            value = @to_hash[record + '_']
+            return value.size == 1 ? value[0] : value
+
+          else
+            super
+          end
         end
 
       end
