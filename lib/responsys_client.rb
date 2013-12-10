@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'member'
-gem 'soap4r'
 require 'stub/defaultDriver.rb'
 require 'stub/defaultMappingRegistry.rb'
 
