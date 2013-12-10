@@ -24,17 +24,17 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<soap4r>, [">= 1.5.8"])
-      s.add_runtime_dependency(%q<fastercsv>, [">= 1.5.4"])
-      s.add_development_dependency(%q<mocha>, [">= 0.9.12"])
+      s.add_runtime_dependency('soap4r', [">= 1.5.8"])
+      s.add_runtime_dependency('fastercsv', [">= 1.5.4"])
+      s.add_development_dependency('mocha', [">= 0.9.12"])
     else
-      s.add_dependency(%q<soap4r>, [">= 1.5.8"])
-      s.add_dependency(%q<fastercsv>, [">= 1.5.4"])
-      s.add_dependency(%q<mocha>, [">= 0.9.12"])
+      s.add_dependency('soap4r', [">= 1.5.8"])
+      s.add_dependency('fastercsv', [">= 1.5.4"])
+      s.add_dependency('mocha', [">= 0.9.12"])
     end
   else
-    s.add_dependency(%q<soap4r>, [">= 1.5.8"])
-    s.add_dependency(%q<fastercsv>, [">= 1.5.4"])
-    s.add_dependency(%q<mocha>, [">= 0.9.12"])
+    s.add_dependency('soap4r', [">= 1.5.8"])
+    s.add_dependency('fastercsv', [">= 1.5.4"])
+    s.add_dependency('mocha', [">= 0.9.12"])
   end
 end
