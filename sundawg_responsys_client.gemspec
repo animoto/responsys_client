@@ -20,10 +20,9 @@ Gem::Specification.new do |s|
   s.test_files = ["test/member_test.rb", "test/responsys_client_integration_test.rb", "test/responsys_client_test.rb", "test/test_helper.rb"]
 
   if RUBY_VERSION =~ /^1\.8\./
-    s.add_runtime_dependency('soap4r', [">= 1.5.8"])
+    s.add_dependency('soap4r', [">= 1.5.8"])
   else
-    s.add_runtime_dependency('soap4r-ruby1.9', ["~> 2.0.5"])
+    s.add_dependency('soap4r-ruby1.9', ["~> 2.0.5"])
   end
-  s.add_runtime_dependency('fastercsv', [">= 1.5.4"])
-  s.add_development_dependency('mocha', [">= 0.9.12"])
+  s.add_dependency('fastercsv', [">= 1.5.4"])
 end

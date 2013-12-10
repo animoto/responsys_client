@@ -4,3 +4,4 @@ Manifest
 test/config.yml
 *.swp
 ./**/.swp
+Gemfile.lock
