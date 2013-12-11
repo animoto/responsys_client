@@ -21,8 +21,8 @@ Gem::Specification.new do |s|
 
   if RUBY_VERSION =~ /^1\.8\./
     s.add_dependency('soap4r', [">= 1.5.8"])
+    s.add_dependency('fastercsv', [">= 1.5.4"])
   else
     s.add_dependency('soap4r-ruby1.9', ["~> 2.0.5"])
   end
-  s.add_dependency('fastercsv', [">= 1.5.4"])
 end

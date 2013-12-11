@@ -1,7 +1,13 @@
-require 'fastercsv'
-
 module SunDawg
   module Responsys
+    CsvClass = if RUBY_VERSION =~ /^1\.8\./
+      require 'fastercsv'
+      FasterCSV
+    else
+      require 'csv'
+      CSV
+    end
+
     class Member 
       class UndefinedExtensions < StandardError
       end
@@ -59,7 +65,7 @@ module SunDawg
         # Parses the response CSV file from Responys
         def parse_feedback_csv(file_name)
           results = {}
-          csv = FasterCSV.read(file_name)
+          csv = CsvClass.read(file_name)
           headers = csv.first
           csv.shift
           csv.each do |row|
@@ -80,7 +86,7 @@ module SunDawg
         def import_file(file_name)
           members = []
           headers = nil
-          table = FasterCSV.read(file_name)
+          table = CsvClass.read(file_name)
           table.each do |row|
             if headers.nil?
               headers = row
@@ -181,7 +187,7 @@ module SunDawg
         end
 
         def build_csv_file(members, file_name, attributes, headers, access = "w")
-          FasterCSV.open(file_name, access) do |csv|
+          CsvClass.open(file_name, access) do |csv|
             csv << responsys_fields(attributes) if headers
             members.each do |member|
               csv << member.values(attributes)
