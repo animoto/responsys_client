@@ -5,6 +5,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
   FOLDER_NAME = "Test_Gem"
   CAMPAIGN_NAME = "GemCampaignEmail"
   CAMPAIGN_TRANSACTION_NAME = "GemTransactionalEmail"
+  USER_EMAIL = "srivenu+unlimited.#{Time.now.to_i}@animto.com"
   LIST_NAME = "GemList"
 
   EMAIL = "gem.test@responsys.client.gem.com"
@@ -98,6 +99,56 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       response.each{ |res| assert_equal '', res.errorMessage }
     end 
 
+    def test_trigger_custom_event
+      list_name  =  'staging_CONTACTS_LIST'
+      folder_name = 'Test_Staging'
+      user_data = [{ 
+        :email => "srivenu_fake21@animoto.com",
+        :user_options => {}
+      }]   
+      response = @client.trigger_custom_program(user_data, folder_name, list_name,'staging_custom_event_test') 
+      assert_equal response.first.success, true
+      assert_equal response.first.errorMessage, ""
+    end 
+
+    def test_invalid_params_error_with_nil_folder_name
+      list_name  =  'staging_CONTACTS_LIST'
+      folder_name = nil
+      user_data = [{ 
+        :email => "srivenu+asflsl@animoto.com",
+        :user_options => {}
+      }]   
+      assert_raise SunDawg::Responsys::ResponsysClient::InvalidParams do 
+        response = @client.trigger_custom_program(user_data, folder_name, list_name,'staging_custom_event_test') 
+      end
+    end
+
+    def test_invalid_params_error_with_nil_event_name
+      list_name  = 'staging_CONTACTS_LIST'
+      folder_name = 'Test_Staging'
+      event_name = nil
+      user_data = [{ 
+        :email => "srivenu+asflsl@animoto.com",
+        :user_options => {}
+      }]   
+      assert_raise SunDawg::Responsys::ResponsysClient::InvalidParams do 
+        response = @client.trigger_custom_program(user_data, folder_name, list_name, event_name) 
+      end
+    end
+
+    def test_invalid_params_error_with_nil_list_name
+      list_name  = nil 
+      folder_name = 'Test_Staging'
+      event_name = 'staging_custom_event_test'
+      user_data = [{ 
+        :email => "srivenu+asflsl@animoto.com",
+        :user_options => {}
+      }]   
+      assert_raise SunDawg::Responsys::ResponsysClient::InvalidParams do 
+        response = @client.trigger_custom_program(user_data, folder_name, list_name, event_name) 
+      end
+    end
+
     def test_too_many_members_error_suplemental_table
       members = 202.times.map do |i|
         {
@@ -131,7 +182,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       SunDawg::Responsys::Member.add_field :state, true
       member = SunDawg::Responsys::Member.new
       member.customer_id = Time.now.to_i 
-      member.email_address = "sundawg.#{Time.now.to_i}@sundawg.net"
+      member.email_address = USER_EMAIL
       member.email_permission_status = "I"
       member.city = "San Francisco"
       member.state = "CA"
@@ -147,7 +198,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       SunDawg::Responsys::Member.add_field :state, true
       member = SunDawg::Responsys::Member.new
       member.customer_id = Time.now.to_i 
-      member.email_address = "lol.cats.sundawg.#{Time.now.to_i}@sundawg.net"
+      member.email_address = USER_EMAIL
       member.email_permission_status = SunDawg::Responsys::PermissionStatus::OPTIN
       member.city = "San Francisco"
       member.state = "CA"
@@ -166,7 +217,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
 
       member = SunDawg::Responsys::Member.new
       member.customer_id = Time.now.to_i 
-      member.email_address = "sundawg-montgomery@sundawg.net"
+      member.email_address = 'srivenu+unlimited007s@animoto.com'
       member.email_permission_status = SunDawg::Responsys::PermissionStatus::OPTIN
       member.city = "Montgomery"
       member.state = "AL"
@@ -209,21 +260,12 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
     end
 
     def test_trigger_campaign_with_optional_data
-      response = @client.trigger_campaign(
-        FOLDER_NAME, 
-        CAMPAIGN_TRANSACTION_NAME, 
-        EMAIL,
-        {:name => "Fred"}
-      )
+      response = @client.trigger_campaign(FOLDER_NAME, CAMPAIGN_TRANSACTION_NAME, EMAIL, {:name => "Fred"})
       assert response.first.success
     end
 
     def test_trigger_campaign_without_optional_data
-      response = @client.trigger_campaign(
-        FOLDER_NAME,
-        CAMPAIGN_TRANSACTION_NAME,
-        EMAIL
-      )
+      response = @client.trigger_campaign( FOLDER_NAME, CAMPAIGN_TRANSACTION_NAME, EMAIL)
       assert response.first.success
     end
   end
