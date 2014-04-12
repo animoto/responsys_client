@@ -217,6 +217,71 @@ module SunDawg
         end
       end
 
+      #### 
+      ##  users_data = [
+      ##                {
+      ##                  :email => 'abc@animoto.com',
+      ##                  :user_options => { :foo => :bar }
+      ##                },
+      ##               {
+      ##                  :email => 'xyz@animoto.com',
+      ##                  :user_options => { :foo => :bar }
+      ##               },
+      ##             ]
+      ####
+      def trigger_custom_program(users_data, folder_name, list_name, event_name = nil, event_id = nil)
+        raise if(event_name.nil? && event_id.nil?)
+
+        list_object = InteractObject.new
+        list_object.folderName = folder_name
+        list_object.objectName = list_name
+ 
+        custom_event = CustomEvent.new
+        custom_event.eventName = event_name if event_name
+        custom_event.eventId = event_id if event_id
+
+        custom_event.recipients = []
+        custom_event.optionalData = []
+        recipientData = []
+
+        # loop for each user
+        users_data.each do |user_info|
+          raise if user_info[:email].nil?
+
+          recipient_options = user_info[:user_options] || {}
+          # Responsys requires something in the optional data for SOAP bindings to work
+          recipient_options[:foo] = :bar if recipient_options.empty?
+
+          recipient = Recipient.new
+          recipient.emailAddress = user_info[:email] if user_info[:email]
+          recipient.listName = list_object 
+          recipient_data = RecipientData.new
+          recipient_data.recipient = recipient
+          recipient_data.optionalData = []
+          custom_event.recipients << recipient
+
+          recipient_options.each_pair do |k, v|
+            optional_data = OptionalData.new
+            optional_data.name = k
+            v.gsub!(/[[:cntrl:]]/, ' ') if v.is_a? String
+            optional_data.value = v 
+            recipient_data.optionalData << optional_data
+            custom_event.optionalData << optional_data
+          end
+
+          recipientData << recipient_data
+        end
+
+        trigger_custom_event = TriggerCustomEvent.new
+        trigger_custom_event.recipientData = recipientData
+        trigger_custom_event.customEvent = custom_event
+
+        with_session do
+          @responsys_client.triggerCustomEvent trigger_custom_event
+        end
+ 
+      end
+
       def with_timeout
         Timeout::timeout(timeout_threshold, ResponsysTimeoutError) do
           yield

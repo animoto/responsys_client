@@ -285,16 +285,14 @@ module SunDawg
     class CustomEvent
       attr_accessor :eventName
       attr_accessor :eventId
-      attr_accessor :eventStringDataMapping
-      attr_accessor :eventDateDataMapping
-      attr_accessor :eventNumberDataMapping
+      attr_accessor :recipients
+      attr_accessor :optionalData
 
-      def initialize(eventName = nil, eventId = nil, eventStringDataMapping = nil, eventDateDataMapping = nil, eventNumberDataMapping = nil)
+      def initialize(eventName = nil, eventId = nil, recipients= nil, optionalData= nil)
         @eventName = eventName
         @eventId = eventId
-        @eventStringDataMapping = eventStringDataMapping
-        @eventDateDataMapping = eventDateDataMapping
-        @eventNumberDataMapping = eventNumberDataMapping
+        @recipients = recipients
+        @optionalData = optionalData
       end
     end
 
@@ -1154,6 +1152,9 @@ module SunDawg
     #   customEvent - CustomEvent
     #   recipientData - RecipientData
     class TriggerCustomEvent
+#      @@schema_type = 'triggerCustomEvent'
+#      @@schema_ns = "urn:ws.rsys.com"
+
       attr_accessor :customEvent
       attr_accessor :recipientData
 
@@ -1165,6 +1166,14 @@ module SunDawg
 
     # {urn:ws.rsys.com}triggerCustomEventResponse
     class TriggerCustomEventResponse < ::Array
+#      @@schema_type = 'triggerCustomEventResponse'
+#      @@schema_ns = "urn:ws.rsys.com"
+
+      attr_accessor :result
+
+      def initialize(result = nil)
+        @result = result
+      end
     end
 
     # {urn:ws.rsys.com}createCampaign

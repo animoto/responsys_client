@@ -5,6 +5,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
   FOLDER_NAME = "Test_Gem"
   CAMPAIGN_NAME = "GemCampaignEmail"
   CAMPAIGN_TRANSACTION_NAME = "GemTransactionalEmail"
+  USER_EMAIL = "srivenu+unlimited.#{Time.now.to_i}@animto.com"
   LIST_NAME = "GemList"
 
   EMAIL = "gem.test@responsys.client.gem.com"
@@ -98,6 +99,18 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       response.each{ |res| assert_equal '', res.errorMessage }
     end 
 
+    def test_trigger_custom_event
+      list_name  = LIST_NAME
+      folder_name = FOLDER_NAME
+      user_data = [{ 
+        :email => "gem.test@responsys.client.gem.com",
+        :user_options => {}
+      }]   
+      response = @client.trigger_custom_program(user_data, folder_name, list_name,'staging_custom_event_test') 
+      assert_equal response.first.success, true
+      assert_equal response.first.errorMessage, ""
+    end 
+
     def test_too_many_members_error_suplemental_table
       members = 202.times.map do |i|
         {
@@ -131,7 +144,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       SunDawg::Responsys::Member.add_field :state, true
       member = SunDawg::Responsys::Member.new
       member.customer_id = Time.now.to_i 
-      member.email_address = "sundawg.#{Time.now.to_i}@sundawg.net"
+      member.email_address = USER_EMAIL
       member.email_permission_status = "I"
       member.city = "San Francisco"
       member.state = "CA"
@@ -147,7 +160,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       SunDawg::Responsys::Member.add_field :state, true
       member = SunDawg::Responsys::Member.new
       member.customer_id = Time.now.to_i 
-      member.email_address = "lol.cats.sundawg.#{Time.now.to_i}@sundawg.net"
+      member.email_address = USER_EMAIL
       member.email_permission_status = SunDawg::Responsys::PermissionStatus::OPTIN
       member.city = "San Francisco"
       member.state = "CA"
@@ -166,7 +179,7 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
 
       member = SunDawg::Responsys::Member.new
       member.customer_id = Time.now.to_i 
-      member.email_address = "sundawg-montgomery@sundawg.net"
+      member.email_address = 'srivenu+unlimited007s@animoto.com'
       member.email_permission_status = SunDawg::Responsys::PermissionStatus::OPTIN
       member.city = "Montgomery"
       member.state = "AL"
@@ -209,21 +222,12 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
     end
 
     def test_trigger_campaign_with_optional_data
-      response = @client.trigger_campaign(
-        FOLDER_NAME, 
-        CAMPAIGN_TRANSACTION_NAME, 
-        EMAIL,
-        {:name => "Fred"}
-      )
+      response = @client.trigger_campaign(FOLDER_NAME, CAMPAIGN_TRANSACTION_NAME, EMAIL, {:name => "Fred"})
       assert response.first.success
     end
 
     def test_trigger_campaign_without_optional_data
-      response = @client.trigger_campaign(
-        FOLDER_NAME,
-        CAMPAIGN_TRANSACTION_NAME,
-        EMAIL
-      )
+      response = @client.trigger_campaign( FOLDER_NAME, CAMPAIGN_TRANSACTION_NAME, EMAIL)
       assert response.first.success
     end
   end
