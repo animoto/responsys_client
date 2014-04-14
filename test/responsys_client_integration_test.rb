@@ -100,10 +100,10 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
     end 
 
     def test_trigger_custom_event
-      list_name  = LIST_NAME
-      folder_name = FOLDER_NAME
+      list_name  =  'staging_CONTACTS_LIST'
+      folder_name = 'Test_Staging'
       user_data = [{ 
-        :email => "gem.test@responsys.client.gem.com",
+        :email => "srivenu+asflsl@animoto.com",
         :user_options => {}
       }]   
       response = @client.trigger_custom_program(user_data, folder_name, list_name,'staging_custom_event_test') 

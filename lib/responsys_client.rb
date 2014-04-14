@@ -218,19 +218,18 @@ module SunDawg
       end
 
       #### 
-      ##  users_data = [
-      ##                {
-      ##                  :email => 'abc@animoto.com',
-      ##                  :user_options => { :foo => :bar }
-      ##                },
-      ##               {
-      ##                  :email => 'xyz@animoto.com',
-      ##                  :user_options => { :foo => :bar }
-      ##               },
-      ##             ]
+        ##  users_data = [
+        ##                 {:email => 'abc@animoto.com', :user_options => {:foo => :bar}},
+        ##                 {:email => 'xyz@animoto.com', :user_options => {:foo => :bar}}
+        ##               ]
+        ##  
+        ##  response = [  
+        ##                #<SunDawg::Responsys::TriggerResult:0x11169c8e8 @errorMessage="", @recipientId=14640439, @success=true>,
+        ##                #<SunDawg::Responsys::TriggerResult:0x11169c8e8 @errorMessage="MULTIPLE_RECIPIENTS_FOUND", @recipientId=-2, @success=false>
+        ##              ]
       ####
       def trigger_custom_program(users_data, folder_name, list_name, event_name = nil, event_id = nil)
-        raise if(event_name.nil? && event_id.nil?)
+        raise if(event_name.nil? && event_id.nil?) || list_name.nil? || folder_name.nil?
 
         list_object = InteractObject.new
         list_object.folderName = folder_name
