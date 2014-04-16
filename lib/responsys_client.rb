@@ -10,12 +10,15 @@ module SunDawg
 
       MAX_MEMBERS = 200
 
+      class InvalidParams < StandardError
+        def initialize(message)
+          super("#{message}")
+        end 
+      end 
       class TooManyMembersError < StandardError
       end
-
       class ResponsysTimeoutError < StandardError
       end
-
       class MethodsNotSupportedError < StandardError
       end
 
@@ -229,7 +232,16 @@ module SunDawg
         ##              ]
       ####
       def trigger_custom_program(users_data, folder_name, list_name, event_name = nil, event_id = nil)
-        raise if(event_name.nil? && event_id.nil?) || list_name.nil? || folder_name.nil?
+        nil_param = begin
+                      if (event_name.nil? && event_id.nil?)
+                        "both event_name & event_id"
+                      elsif list_name.nil?
+                        "list_name"
+                      elsif folder_name.nil?
+                        "folder_name"
+                      end
+                    end
+        raise  InvalidParams.new("Error:#{nil_param} cannot be nil") if nil_param
 
         list_object = InteractObject.new
         list_object.folderName = folder_name

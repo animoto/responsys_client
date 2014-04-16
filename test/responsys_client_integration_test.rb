@@ -103,13 +103,51 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       list_name  =  'staging_CONTACTS_LIST'
       folder_name = 'Test_Staging'
       user_data = [{ 
-        :email => "srivenu+asflsl@animoto.com",
+        :email => "srivenu_fake21@animoto.com",
         :user_options => {}
       }]   
       response = @client.trigger_custom_program(user_data, folder_name, list_name,'staging_custom_event_test') 
       assert_equal response.first.success, true
       assert_equal response.first.errorMessage, ""
     end 
+
+    def test_invalid_params_error_with_nil_folder_name
+      list_name  =  'staging_CONTACTS_LIST'
+      folder_name = nil
+      user_data = [{ 
+        :email => "srivenu+asflsl@animoto.com",
+        :user_options => {}
+      }]   
+      assert_raise SunDawg::Responsys::ResponsysClient::InvalidParams do 
+        response = @client.trigger_custom_program(user_data, folder_name, list_name,'staging_custom_event_test') 
+      end
+    end
+
+    def test_invalid_params_error_with_nil_event_name
+      list_name  = 'staging_CONTACTS_LIST'
+      folder_name = 'Test_Staging'
+      event_name = nil
+      user_data = [{ 
+        :email => "srivenu+asflsl@animoto.com",
+        :user_options => {}
+      }]   
+      assert_raise SunDawg::Responsys::ResponsysClient::InvalidParams do 
+        response = @client.trigger_custom_program(user_data, folder_name, list_name, event_name) 
+      end
+    end
+
+    def test_invalid_params_error_with_nil_list_name
+      list_name  = nil 
+      folder_name = 'Test_Staging'
+      event_name = 'staging_custom_event_test'
+      user_data = [{ 
+        :email => "srivenu+asflsl@animoto.com",
+        :user_options => {}
+      }]   
+      assert_raise SunDawg::Responsys::ResponsysClient::InvalidParams do 
+        response = @client.trigger_custom_program(user_data, folder_name, list_name, event_name) 
+      end
+    end
 
     def test_too_many_members_error_suplemental_table
       members = 202.times.map do |i|
