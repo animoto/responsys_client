@@ -12,7 +12,7 @@ module SunDawg
 
       class InvalidParams < StandardError
         def initialize(message)
-          super("#{message}")
+          super(message.to_s)
         end 
       end 
       class TooManyMembersError < StandardError
@@ -232,16 +232,16 @@ module SunDawg
         ##              ]
       ####
       def trigger_custom_program(users_data, folder_name, list_name, event_name = nil, event_id = nil)
-        nil_param = begin
-                      if (event_name.nil? && event_id.nil?)
+        nil_param =  if (event_name.nil? && event_id.nil?)
                         "both event_name & event_id"
                       elsif list_name.nil?
                         "list_name"
                       elsif folder_name.nil?
                         "folder_name"
                       end
-                    end
-        raise  InvalidParams.new("Error:#{nil_param} cannot be nil") if nil_param
+        if nil_param
+          raise  InvalidParams.new("Error:#{nil_param} cannot be nil") 
+        end
 
         list_object = InteractObject.new
         list_object.folderName = folder_name

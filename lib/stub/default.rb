@@ -1152,9 +1152,6 @@ module SunDawg
     #   customEvent - CustomEvent
     #   recipientData - RecipientData
     class TriggerCustomEvent
-#      @@schema_type = 'triggerCustomEvent'
-#      @@schema_ns = "urn:ws.rsys.com"
-
       attr_accessor :customEvent
       attr_accessor :recipientData
 
@@ -1166,9 +1163,6 @@ module SunDawg
 
     # {urn:ws.rsys.com}triggerCustomEventResponse
     class TriggerCustomEventResponse < ::Array
-#      @@schema_type = 'triggerCustomEventResponse'
-#      @@schema_ns = "urn:ws.rsys.com"
-
       attr_accessor :result
 
       def initialize(result = nil)
