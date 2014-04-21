@@ -19,22 +19,10 @@ Gem::Specification.new do |s|
   s.summary = %q{Ruby SOAP Client For Responsys API}
   s.test_files = ["test/member_test.rb", "test/responsys_client_integration_test.rb", "test/responsys_client_test.rb", "test/test_helper.rb"]
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
-
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<soap4r>, [">= 1.5.8"])
-      s.add_runtime_dependency(%q<fastercsv>, [">= 1.5.4"])
-      s.add_development_dependency(%q<mocha>, [">= 0.9.12"])
-    else
-      s.add_dependency(%q<soap4r>, [">= 1.5.8"])
-      s.add_dependency(%q<fastercsv>, [">= 1.5.4"])
-      s.add_dependency(%q<mocha>, [">= 0.9.12"])
-    end
+  if RUBY_VERSION =~ /^1\.8\./
+    s.add_dependency('soap4r', [">= 1.5.8"])
+    s.add_dependency('fastercsv', [">= 1.5.4"])
   else
-    s.add_dependency(%q<soap4r>, [">= 1.5.8"])
-    s.add_dependency(%q<fastercsv>, [">= 1.5.4"])
-    s.add_dependency(%q<mocha>, [">= 0.9.12"])
+    s.add_dependency('soap4r-ruby1.9', ["~> 2.0.5"])
   end
 end
