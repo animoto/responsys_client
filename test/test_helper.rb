@@ -1,6 +1,6 @@
-require 'test/unit'
 require 'rubygems'
-require 'mocha'
+Bundler.require
+require 'test/unit'
 require 'mocha/test_unit'
 
 # adding '../lib' into the path
