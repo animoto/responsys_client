@@ -63,3 +63,17 @@ I, [2014-04-25T15:32:17.512192 #76564]  INFO -- : 0:  mocha (1.0.0) from /Users/
 I, [2014-04-25T15:32:17.512502 #76564]  INFO -- : 0:  soap4r (1.5.8) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/soap4r-1.5.8.gemspec
 I, [2014-04-25T15:32:17.584610 #76564]  INFO -- : 0:  sundawg_responsys_client (0.0.1) from /Users/iamjwc/programming/responsys_client/sundawg_responsys_client.gemspec
 I, [2014-04-25T15:32:17.585093 #76564]  INFO -- : 0:  bundler (1.5.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374@global/specifications/bundler-1.5.1.gemspec
+I, [2014-04-27T21:28:16.615124 #96832]  INFO -- : 0:  rake (10.3.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/rake-10.3.1.gemspec
+I, [2014-04-27T21:28:16.616725 #96832]  INFO -- : 0:  allison (2.0.3) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/allison-2.0.3.gemspec
+I, [2014-04-27T21:28:16.617107 #96832]  INFO -- : 0:  json (1.8.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/json-1.8.1.gemspec
+I, [2014-04-27T21:28:16.617693 #96832]  INFO -- : 0:  rdoc (4.1.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/rdoc-4.1.1.gemspec
+I, [2014-04-27T21:28:16.618006 #96832]  INFO -- : 0:  json_pure (1.8.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/json_pure-1.8.1.gemspec
+I, [2014-04-27T21:28:16.618306 #96832]  INFO -- : 0:  rubyforge (2.0.4) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/rubyforge-2.0.4.gemspec
+I, [2014-04-27T21:28:16.618610 #96832]  INFO -- : 0:  echoe (4.6.5) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/echoe-4.6.5.gemspec
+I, [2014-04-27T21:28:16.618923 #96832]  INFO -- : 0:  fastercsv (1.5.5) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/fastercsv-1.5.5.gemspec
+I, [2014-04-27T21:28:16.619235 #96832]  INFO -- : 0:  httpclient (2.3.4.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/httpclient-2.3.4.1.gemspec
+I, [2014-04-27T21:28:16.619544 #96832]  INFO -- : 0:  metaclass (0.0.4) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/metaclass-0.0.4.gemspec
+I, [2014-04-27T21:28:16.619867 #96832]  INFO -- : 0:  mocha (1.0.0) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/mocha-1.0.0.gemspec
+I, [2014-04-27T21:28:16.620172 #96832]  INFO -- : 0:  soap4r (1.5.8) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374/specifications/soap4r-1.5.8.gemspec
+I, [2014-04-27T21:28:16.725029 #96832]  INFO -- : 0:  sundawg_responsys_client (0.0.1) from /Users/iamjwc/programming/responsys_client/sundawg_responsys_client.gemspec
+I, [2014-04-27T21:28:16.725435 #96832]  INFO -- : 0:  bundler (1.5.1) from /Users/iamjwc/.rvm/gems/ruby-1.8.7-p374@global/specifications/bundler-1.5.1.gemspec
