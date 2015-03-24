@@ -256,7 +256,9 @@ module SunDawg
 
         # loop for each user
         users_data.each do |user_info|
-          raise if user_info[:email].nil?
+          if user_info[:email].nil? && user_info[:id].nil?
+            raise
+          end
 
           recipient_options = user_info[:user_options] || {}
           # Responsys requires something in the optional data for SOAP bindings to work
@@ -264,6 +266,7 @@ module SunDawg
 
           recipient = Recipient.new
           recipient.emailAddress = user_info[:email] if user_info[:email]
+          recipient.customerId = user_info[:id] if user_info[:id]
           recipient.listName = list_object 
           recipient_data = RecipientData.new
           recipient_data.recipient = recipient
