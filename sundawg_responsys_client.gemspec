@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name = %q{sundawg_responsys_client}
   s.version = "0.0.1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = '> 1.8'
   s.authors = ["Christopher Sun"]
   s.date = %q{2011-06-03}
   s.description = %q{Ruby SOAP Client For Responsys API}
@@ -19,10 +19,5 @@ Gem::Specification.new do |s|
   s.summary = %q{Ruby SOAP Client For Responsys API}
   s.test_files = ["test/member_test.rb", "test/responsys_client_integration_test.rb", "test/responsys_client_test.rb", "test/test_helper.rb"]
 
-  if RUBY_VERSION =~ /^1\.8\./
-    s.add_dependency('soap4r', [">= 1.5.8"])
-    s.add_dependency('fastercsv', [">= 1.5.4"])
-  else
-    s.add_dependency('soap4r-ruby1.9', ["~> 2.0.5"])
-  end
+  s.add_dependency('soap4r-ruby1.9', ["~> 2.0.5"])
 end
