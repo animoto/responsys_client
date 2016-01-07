@@ -2266,9 +2266,9 @@ module SunDawg
 
       def initialize(recipientResult = nil)
         @recipientResult = recipientResult
-      end      
+      end
     end
-    
+
  # {urn:ws.rsys.com}retrieveProfileExtensionRecords
     #   listExtension - InteractObject
     #   queryColumn - QueryColumn
@@ -2281,6 +2281,7 @@ module SunDawg
       #@@schema_element = [[ "profileExtension", "InteractObject"], ["queryColumn", "QueryColumn"], ["fieldList", "SOAP::SOAPString"], ["idsToRetrieve", "SOAP::SOAPString"]]
 
       attr_accessor :listExtension
+      attr_accessor :profileExtension
       attr_accessor :queryColumn
       attr_accessor :fieldList
       attr_accessor :idsToRetrieve
