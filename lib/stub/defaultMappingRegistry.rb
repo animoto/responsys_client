@@ -1141,6 +1141,23 @@ module DefaultMappingRegistry
   )
 
   LiteralRegistry.register(
+    :class => SunDawg::Responsys::HaMergeTriggerEmail,
+    :schema_name => XSD::QName.new(NsWsRsysCom, "triggerCampaignMessage"),
+    :schema_element => [
+      ["campaign", "SunDawg::Responsys::InteractObject"],
+      ["triggerData", "SunDawg::Responsys::RecipientData[]", [1, nil]]
+    ]
+  )
+
+  LiteralRegistry.register(
+    :class => SunDawg::Responsys::HaMergeTriggerEmailResponse,
+    :schema_name => XSD::QName.new(NsWsRsysCom, "triggerCampaignMessageResponse"),
+    :schema_element => [
+      ["result", "SunDawg::Responsys::TriggerResult[]", [1, nil]]
+    ]
+  )
+
+  LiteralRegistry.register(
     :class => SunDawg::Responsys::TriggerCustomEvent,
     :schema_name => XSD::QName.new(NsWsRsysCom, "triggerCustomEvent"),
     :schema_element => [

@@ -219,6 +219,9 @@ module SunDawg
         end
       end
 
+      def ha_merge_trigger_email(folder_name, list_name, members, campaign_name, )
+
+      end
       #### 
         ##  users_data = [
         ##                 {:email => 'abc@animoto.com', :user_options => {:foo => :bar}},
