@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'member'
 require 'stub/defaultDriver.rb'
+require 'stub/hatmDriver.rb'
 require 'stub/defaultMappingRegistry.rb'
 
 module SunDawg
