@@ -226,8 +226,8 @@ module SunDawg
       # mergeRule, InteractObject campaign, TriggerData[] triggertData)
 
       def ha_merge_trigger_email(folder_name, campaign_name, members, optional_data)
-        if list_name.nil? || folder_name.nil?
-          raise  InvalidParams.new("Error: folder_name or list_name cannot be nil")
+        if campaign_name.nil? || folder_name.nil?
+          raise  InvalidParams.new("Error: folder_name or campaign_name cannot be nil")
         end
 
         campaign_object = InteractObject.new
