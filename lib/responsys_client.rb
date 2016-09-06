@@ -248,7 +248,7 @@ module SunDawg
         list_merge_rule.matchColumnName1 = "CUSTOMER_ID_"
 
         trigger_data = TriggerData.new
-        trigger_data.optional_data = optional_data
+        trigger_data.optionalData = optional_data
 
         merge_trigger_email = HaMergeTriggerEmail.new
         merge_trigger_email.recordData = record_data
