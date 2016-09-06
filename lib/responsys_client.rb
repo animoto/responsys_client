@@ -54,6 +54,10 @@ module SunDawg
         @responsys_client.options['protocol.http.send_timeout'] = secs
         @responsys_client.options['protocol.http.receive_timeout']  = secs
 
+        @hatm_client.options['protocol.http.connect_timeout'] = secs
+        @hatm_client.options['protocol.http.send_timeout'] = secs
+        @hatm_client.options['protocol.http.receive_timeout']  = secs
+
         @timeout_threshold = secs
       end
 
@@ -63,7 +67,9 @@ module SunDawg
           login_request.username = @username
           login_request.password = @password
           response = @responsys_client.login login_request
+          hatm_response = @responsys_client.login login_request
           @session_id = response.result.sessionId
+          @hatm_session_id = hatm_response.result.sessionId
           assign_session
         end
       end
@@ -71,15 +77,22 @@ module SunDawg
       def assign_session
         session_header_request = SessionHeader.new
         session_header_request.sessionId = @session_id
+
+        hatm_session_header_request = SessionHeader.new
+        hatm_session_header_request.sessionId = @hatm_session_id
+
         @responsys_client.headerhandler.add session_header_request
+        @hatm_client.headerhandler.add hatm_session_header_request
       end
 
       def logout
         begin
           logout_request = Logout.new
           @responsys_client.logout logout_request
+          @hatm_client.logout logout_request
         ensure
           @session_id = nil
+          @hatm_session_id = nil
         end
       end
 
@@ -346,7 +359,7 @@ module SunDawg
       def with_session
         begin
           with_timeout do
-            login if @session_id.nil?
+            login if @session_id.nil? || @hatm_session_id.nil?
           end
           with_application_error do
             with_timeout do
