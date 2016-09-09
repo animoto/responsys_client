@@ -47,7 +47,7 @@ class HATMResponsysWS < ::SOAP::RPC::Driver
         :faults => {"UnexpectedErrorFault_"=>{:ns=>"urn:ws.rsys.com", :use=>"literal", :namespace=>nil, :encodingstyle=>"document", :name=>"UnexpectedErrorFault"}, "ListFault_"=>{:ns=>"urn:ws.rsys.com", :use=>"literal", :namespace=>nil, :encodingstyle=>"document", :name=>"ListFault"}} }
     ],
     [ "",
-      "haMergeTriggerEmail",
+      "HaMergeTriggerEmail",
       [ ["in", "parameters", ["::SOAP::SOAPElement", "urn:ws.rsys.com", "haMergeTriggerEmail"]],
         ["out", "parameters", ["::SOAP::SOAPElement", "urn:ws.rsys.com", "haMergeTriggerEmailResponse"]] ],
       { :request_style =>  :document, :request_use =>  :literal,
