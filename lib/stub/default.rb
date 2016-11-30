@@ -1569,6 +1569,11 @@ module SunDawg
 
     # {urn:ws.rsys.com}deleteListMembersResponse
     class DeleteListMembersResponse < ::Array
+      attr_accessor :result
+
+      def initialize(result = nil)
+        @result = result
+      end
     end
 
     # {urn:ws.rsys.com}getUpdated
@@ -2266,7 +2271,7 @@ module SunDawg
 
       def initialize(recipientResult = nil)
         @recipientResult = recipientResult
-      end      
+      end
     end
 
     module RubyFriendlyMethods
