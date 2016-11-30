@@ -268,16 +268,15 @@ class ResponsysClientIntegrationTest < Test::Unit::TestCase
       response = @client.trigger_campaign( FOLDER_NAME, CAMPAIGN_TRANSACTION_NAME, EMAIL)
       assert response.first.success
     end
-  end
 
-
-  def test_delete_members_with_attributes
-    SunDawg::Responsys::Member.add_field :customer_id, true
-    SunDawg::Responsys::Member.add_field :email_address, true
-    member = SunDawg::Responsys::Member.new
-    member.customer_id = Time.now.to_i
-    member.email_address = USER_EMAIL
-    response = @client.delete_members FOLDER_NAME, LIST_NAME, [member]
-    assert response.result
+    def test_delete_members_with_attributes
+      SunDawg::Responsys::Member.add_field :customer_id, true
+      SunDawg::Responsys::Member.add_field :email_address, true
+      member = SunDawg::Responsys::Member.new
+      member.customer_id = Time.now.to_i
+      member.email_address = USER_EMAIL
+      response = @client.delete_members FOLDER_NAME, LIST_NAME, [member]
+      assert response.result
+    end
   end
 end
