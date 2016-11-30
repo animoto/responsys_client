@@ -174,8 +174,8 @@ module SunDawg
             ids_to_delete << member.attributes[key]
           end
           interact_object = InteractObject.new
-          interact_object.folder_name = folder_name
-          interact_object.object_name = list_name
+          interact_object.folderName = folder_name
+          interact_object.objectName = list_name
           query_column = QueryColumn.new(matching_column)
           delete_members = DeleteListMembers.new(interact_object, query_column, ids_to_delete)
           @responsys_client.deleteListMembers delete_members
