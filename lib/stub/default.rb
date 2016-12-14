@@ -2266,7 +2266,7 @@ module SunDawg
 
       def initialize(recipientResult = nil)
         @recipientResult = recipientResult
-      end      
+      end
     end
 
     module RubyFriendlyMethods
