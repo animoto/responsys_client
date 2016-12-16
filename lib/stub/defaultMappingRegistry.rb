@@ -1144,10 +1144,10 @@ module DefaultMappingRegistry
     :class => SunDawg::Responsys::HaMergeTriggerEmail,
     :schema_name => XSD::QName.new(NsWsRsysCom, "triggerCampaignMessage"),
     :schema_element => [
+      ["recordData", "SunDawg::Responsys::RecordData"],
+      ["mergeRule", "SunDawg::Responsys::ListMergeRule"],
       ["campaign", "SunDawg::Responsys::InteractObject"],
       ["triggerData", "SunDawg::Responsys::RecipientData[]", [1, nil]],
-      ["recordData", "SunDawg::Responsys::RecordData"],
-      ["mergeRule", "SunDawg::Responsys::ListMergeRule"]
     ]
   )
 
