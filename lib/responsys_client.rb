@@ -248,11 +248,13 @@ module SunDawg
         campaign_object.objectName = campaign_name
 
         record_data = RecordData.new
-        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.keys)
-        record_data.records = members.map do |member|
-          record_data.fieldNames.map do |field|
-            member[field]
-          end
+        puts "MEMBER: #{members.first.inspect}"
+        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.attributes.keys)
+        record_data.records = []
+        members.each do |member|
+          record = Record.new
+          record = member.values
+          record_data.records << record
         end
 
         list_merge_rule = ListMergeRule.new
