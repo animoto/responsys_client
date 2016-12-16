@@ -249,7 +249,7 @@ module SunDawg
 
         record_data = RecordData.new
         puts "MEMBER: #{members.first.inspect}"
-        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.attributes.keys)
+        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.keys)
         record_data.records = []
         members.each do |member|
           record = Record.new
