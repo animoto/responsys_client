@@ -272,7 +272,7 @@ module SunDawg
         merge_trigger_email.triggerData = trigger_data
         puts "AIVEN: #{merge_trigger_email.inspect}"
         with_session do
-          @hatm_client.HaMergeTriggerEmail(merge_trigger_email)
+          @hatm_client.haMergeTriggerEmail(merge_trigger_email)
         end
       end
 
