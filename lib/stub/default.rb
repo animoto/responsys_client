@@ -1176,11 +1176,6 @@ module SunDawg
 
     # {urn:ws.rsys.com}HaMergeTriggerEmailResponse
     class HaMergeTriggerEmailResponse < ::Array
-      attr_accessor :result
-
-      def initialize(result = nil)
-        @result = result
-      end
     end
 
     # {urn:ws.rsys.com}triggerCustomEvent
