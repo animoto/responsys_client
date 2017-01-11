@@ -137,6 +137,14 @@ module DefaultMappingRegistry
   )
 
   EncodedRegistry.register(
+    :class => SunDawg::Responsys::TriggerData,
+    :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::TriggerData"),
+    :schema_element => [
+      ["optionalData", "SunDawg::Responsys::OptionalData[]", [1, nil]]
+    ]
+  )
+
+  EncodedRegistry.register(
     :class => SunDawg::Responsys::TriggerResult,
     :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::TriggerResult"),
     :schema_element => [
@@ -618,6 +626,14 @@ module DefaultMappingRegistry
     :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::RecipientData"),
     :schema_element => [
       ["recipient", "SunDawg::Responsys::Recipient"],
+      ["optionalData", "SunDawg::Responsys::OptionalData[]", [1, nil]]
+    ]
+  )
+
+  LiteralRegistry.register(
+    :class => SunDawg::Responsys::TriggerData,
+    :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::TriggerData"),
+    :schema_element => [
       ["optionalData", "SunDawg::Responsys::OptionalData[]", [1, nil]]
     ]
   )
