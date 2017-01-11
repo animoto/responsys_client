@@ -1147,7 +1147,7 @@ module DefaultMappingRegistry
       ["recordData", "SunDawg::Responsys::RecordData"],
       ["mergeRule", "SunDawg::Responsys::ListMergeRule"],
       ["campaign", "SunDawg::Responsys::InteractObject"],
-      ["triggerData", "SunDawg::Responsys::RecipientData[]", [1, nil]],
+      ["triggerData", "SunDawg::Responsys::TriggerData[]", [1, nil]],
     ]
   )
 
