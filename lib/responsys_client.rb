@@ -236,9 +236,9 @@ module SunDawg
       end
 
       # TriggerResult[] = service.mergeTriggerEmail(RecordData recordData, ListMergeRule
-      # mergeRule, InteractObject campaign, TriggerData[] triggertData)
+      # mergeRule, InteractObject campaign, TriggerData[] triggerData)
 
-      def ha_merge_trigger_email(folder_name, campaign_name, members, optional_data)
+      def ha_merge_trigger_email(folder_name, campaign_name, members, options)
         if campaign_name.nil? || folder_name.nil?
           raise  InvalidParams.new("Error: folder_name or campaign_name cannot be nil")
         end
@@ -247,29 +247,34 @@ module SunDawg
         campaign_object.folderName = folder_name
         campaign_object.objectName = campaign_name
 
-        record_data = RecordData.new
-        puts "MEMBER: #{members.first.inspect}"
-        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.keys)
-        record_data.records = []
-        members.each do |member|
-          record = Record.new
-          record = member.values
-          record_data.records << record
-        end
-
         list_merge_rule = ListMergeRule.new
         list_merge_rule.insertOnNoMatch = true
         list_merge_rule.updateOnMatch = UpdateOnMatch::REPLACE_ALL
         list_merge_rule.matchColumnName1 = "CUSTOMER_ID_"
 
-        trigger_data = TriggerData.new
-        trigger_data.optionalData = []
+        record_data = RecordData.new
+        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.keys)
+        record_data.records = []
+        trigger_data = []
 
-        optional_data.each do |name, value|
-          optional_data = OptionalData.new
-          optional_data.name = name
-          optional_data.value = value
-          trigger_data.optionalData << optional_data
+        members.each_with_index do |member, i|
+          option_hash = options[i]
+
+          record = Record.new
+          record = member.values
+          record_data.records << record
+
+          trigger = TriggerData.new
+          trigger.optionalData = []
+
+          option_hash.each do |name, value|
+            optional_data = OptionalData.new
+            optional_data.name = name
+            optional_data.value = value
+            trigger.optionalData << optional_data
+          end
+
+          trigger_data << trigger
         end
 
         merge_trigger_email = HaMergeTriggerEmail.new
