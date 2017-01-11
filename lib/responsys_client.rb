@@ -67,7 +67,7 @@ module SunDawg
           login_request.username = @username
           login_request.password = @password
           response = @responsys_client.login login_request
-          hatm_response = @responsys_client.login login_request
+          hatm_response = @hatm_client.login login_request
           @session_id = response.result.sessionId
           @hatm_session_id = hatm_response.result.sessionId
           assign_session
