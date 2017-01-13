@@ -1158,7 +1158,7 @@ module DefaultMappingRegistry
 
   LiteralRegistry.register(
     :class => SunDawg::Responsys::HaMergeTriggerEmail,
-    :schema_name => XSD::QName.new(NsWsRsysCom, "haMergeTriggerEmail"),
+    :schema_name => XSD::QName.new(NsWsRsysCom, "HaMergeTriggerEmail"),
     :schema_element => [
       ["recordData", "SunDawg::Responsys::RecordData"],
       ["mergeRule", "SunDawg::Responsys::ListMergeRule"],
@@ -1169,7 +1169,7 @@ module DefaultMappingRegistry
 
   LiteralRegistry.register(
     :class => SunDawg::Responsys::HaMergeTriggerEmailResponse,
-    :schema_name => XSD::QName.new(NsWsRsysCom, "haMergeTriggerEmailResponse"),
+    :schema_name => XSD::QName.new(NsWsRsysCom, "HaMergeTriggerEmailResponse"),
     :schema_element => [
       ["result", "SunDawg::Responsys::TriggerResult[]", [1, nil]]
     ]
