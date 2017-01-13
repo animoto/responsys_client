@@ -180,6 +180,24 @@ module SunDawg
         end
       end
 
+      def delete_members(folder_name, list_name, members, matching_column='CUSTOMER_ID')
+        raise TooManyMembersError if members.size > MAX_MEMBERS
+
+        with_session do
+          ids_to_delete = []
+          members.each do |member|
+            key = matching_column.downcase.to_sym
+            ids_to_delete << member.attributes[key]
+          end
+          interact_object = InteractObject.new
+          interact_object.folderName = folder_name
+          interact_object.objectName = list_name
+          query_column = QueryColumn.new(matching_column)
+          delete_members = DeleteListMembers.new(interact_object, query_column, ids_to_delete)
+          @responsys_client.deleteListMembers delete_members
+        end
+      end
+
       def launch_campaign(folder_name, campaign_name)
         with_session do
           launch_campaign = LaunchCampaign.new
