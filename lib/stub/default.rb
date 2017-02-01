@@ -260,6 +260,16 @@ module SunDawg
       end
     end
 
+    # {urn:ws.rsys.com}TriggerData
+    #   optionalData - OptionalData
+    class TriggerData
+      attr_accessor :optionalData
+
+      def initialize(optionalData = [])
+        @optionalData = optionalData
+      end
+    end
+
     # {urn:ws.rsys.com}TriggerResult
     #   recipientId - SOAP::SOAPLong
     #   success - SOAP::SOAPBoolean
@@ -1146,6 +1156,26 @@ module SunDawg
 
     # {urn:ws.rsys.com}triggerCampaignMessageResponse
     class TriggerCampaignMessageResponse < ::Array
+    end
+
+    # {urn:ws.rsys.com}HaMergeTriggerEmail
+    #   recordData - RecordData
+    #   mergeRule - ListMergeRule
+    #   campaign - InteractObject
+    #   triggerData - TriggerData[]
+    class HaMergeTriggerEmail
+      attr_accessor :recordData, :mergeRule, :campaign, :triggerData
+
+      def initialize(recordData = nil, mergeRule = nil, campaign = nil, triggerData = [])
+        @recordData = recordData
+        @mergeRule = mergeRule
+        @campaign = campaign
+        @triggerData = triggerData
+      end
+    end
+
+    # {urn:ws.rsys.com}HaMergeTriggerEmailResponse
+    class HaMergeTriggerEmailResponse < ::Array
     end
 
     # {urn:ws.rsys.com}triggerCustomEvent

@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'responsys_client'
 
-class ResponsysClientTest < Test::Unit::TestCase 
+class ResponsysClientTest < Test::Unit::TestCase
   def setup
      SunDawg::Responsys::Member.clear_fields!
   end
@@ -14,14 +14,15 @@ class ResponsysClientTest < Test::Unit::TestCase
     assert SunDawg::Responsys::ResponsysClient.new("foo", "bar", :wiredump_dev => STDOUT)
   end
 
-  def test_save_members_throws_too_many_members_error 
+  def test_save_members_throws_too_many_members_error
     SunDawg::Responsys::Member.add_field :customer_id
     SunDawg::Responsys::Member.add_field :email_address
     SunDawg::Responsys::Member.add_field :email_permission_status
     members = []
-    (SunDawg::Responsys::ResponsysClient::MAX_MEMBERS + 1).times do 
-      members << SunDawg::Responsys::Member.new 
+    (SunDawg::Responsys::ResponsysClient::MAX_MEMBERS + 1).times do
+      members << SunDawg::Responsys::Member.new
     end
+
     assert_raises SunDawg::Responsys::ResponsysClient::TooManyMembersError do
       SunDawg::Responsys::ResponsysClient.new("foo", "bar").save_members("folder", "list", members)
     end
@@ -56,7 +57,12 @@ class ResponsysClientTest < Test::Unit::TestCase
               :logout => true,
               :headerhandler => stub(:add),
               :options => {})
+    hatm_ws = stub(:login => stub(:result => stub(:sessionId => 'session ID')),
+              :logout => true,
+              :headerhandler => stub(:add),
+              :options => {})
     ResponsysWS.stubs(:new).returns(ws)
+    HATMResponsysWS.stubs(:new).returns(hatm_ws)
 
     ws.expects(:mergeListMembers).with do |mlm|
       mlm.recordData.records[0].none? {|r| r.to_s =~ /[[:cntrl:]]/}
@@ -70,7 +76,12 @@ class ResponsysClientTest < Test::Unit::TestCase
               :logout => true,
               :headerhandler => stub(:add),
               :options => {})
+    hatm_ws = stub(:login => stub(:result => stub(:sessionId => 'session ID')),
+              :logout => true,
+              :headerhandler => stub(:add),
+              :options => {})
     ResponsysWS.stubs(:new).returns(ws)
+    HATMResponsysWS.stubs(:new).returns(hatm_ws)
 
     ws.expects(:triggerCampaignMessage).with do |tcm|
       tcm.recipientData[0].optionalData.none? {|od| od.value =~ /[[:cntrl:]]/}
@@ -84,7 +95,12 @@ class ResponsysClientTest < Test::Unit::TestCase
               :logout => true,
               :headerhandler => stub(:add),
               :options => {})
+    hatm_ws = stub(:login => stub(:result => stub(:sessionId => 'session ID')),
+              :logout => true,
+              :headerhandler => stub(:add),
+              :options => {})
     ResponsysWS.stubs(:new).returns(ws)
+    HATMResponsysWS.stubs(:new).returns(hatm_ws)
 
     recipients = {
       'user_1' => { 'SomeData' => 'a value' },
@@ -105,8 +121,42 @@ class ResponsysClientTest < Test::Unit::TestCase
 
     ids = recipients.keys.map { |id| { :id => id } }
     options = recipients.keys.map { |id| recipients[id] }
-
     SunDawg::Responsys::ResponsysClient.new('foo','bar').trigger_user_batch_campaign('campaign', ids, options)
   end
-  
+
+  def test_ha_merge_trigger_email
+    ws = stub(:login => stub(:result => stub(:sessionId => 'session ID')),
+              :logout => true,
+              :headerhandler => stub(:add),
+              :options => {})
+    hatm_ws = stub(:login => stub(:result => stub(:sessionId => 'session ID')),
+              :logout => true,
+              :headerhandler => stub(:add),
+              :options => {})
+    ResponsysWS.stubs(:new).returns(ws)
+    HATMResponsysWS.stubs(:new).returns(hatm_ws)
+
+    recipients = {
+      'user_1' => { 'SomeData' => 'a value' },
+      2 => { 'MoreData' => 'its value' }
+    }
+
+    hatm_ws.expects(:haMergeTriggerEmail).with do |mte|
+      assert_equal mte.recordData.fieldNames, ["ID"]
+      assert_equal recipients.size, mte.recordData.records.length
+
+      mte.recordData.records.each_with_index do |record, i|
+        assert_equal record.first, recipients.keys[i]
+      end
+
+      mte.triggerData.each_with_index do |td, i|
+        assert_equal td.optionalData.first.name, recipients.values[i].keys.first
+        assert_equal td.optionalData.first.value, recipients.values[i].values.first
+      end
+    end
+
+    ids = recipients.keys.map { |id| { :id => id } }
+    options = recipients.keys.map { |id| recipients[id] }
+    SunDawg::Responsys::ResponsysClient.new('foo','bar').ha_merge_trigger_email('folder', 'campaign', ids, options)
+  end
 end

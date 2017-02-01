@@ -137,6 +137,14 @@ module DefaultMappingRegistry
   )
 
   EncodedRegistry.register(
+    :class => SunDawg::Responsys::TriggerData,
+    :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::TriggerData"),
+    :schema_element => [
+      ["optionalData", "SunDawg::Responsys::OptionalData[]", [1, nil]]
+    ]
+  )
+
+  EncodedRegistry.register(
     :class => SunDawg::Responsys::TriggerResult,
     :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::TriggerResult"),
     :schema_element => [
@@ -618,6 +626,14 @@ module DefaultMappingRegistry
     :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::RecipientData"),
     :schema_element => [
       ["recipient", "SunDawg::Responsys::Recipient"],
+      ["optionalData", "SunDawg::Responsys::OptionalData[]", [1, nil]]
+    ]
+  )
+
+  LiteralRegistry.register(
+    :class => SunDawg::Responsys::TriggerData,
+    :schema_type => XSD::QName.new(NsWsRsysCom, "SunDawg::Responsys::TriggerData"),
+    :schema_element => [
       ["optionalData", "SunDawg::Responsys::OptionalData[]", [1, nil]]
     ]
   )
@@ -1135,6 +1151,25 @@ module DefaultMappingRegistry
   LiteralRegistry.register(
     :class => SunDawg::Responsys::TriggerCampaignMessageResponse,
     :schema_name => XSD::QName.new(NsWsRsysCom, "triggerCampaignMessageResponse"),
+    :schema_element => [
+      ["result", "SunDawg::Responsys::TriggerResult[]", [1, nil]]
+    ]
+  )
+
+  LiteralRegistry.register(
+    :class => SunDawg::Responsys::HaMergeTriggerEmail,
+    :schema_name => XSD::QName.new(NsWsRsysCom, "HaMergeTriggerEmail"),
+    :schema_element => [
+      ["recordData", "SunDawg::Responsys::RecordData"],
+      ["mergeRule", "SunDawg::Responsys::ListMergeRule"],
+      ["campaign", "SunDawg::Responsys::InteractObject"],
+      ["triggerData", "SunDawg::Responsys::TriggerData[]", [1, nil]],
+    ]
+  )
+
+  LiteralRegistry.register(
+    :class => SunDawg::Responsys::HaMergeTriggerEmailResponse,
+    :schema_name => XSD::QName.new(NsWsRsysCom, "HaMergeTriggerEmailResponse"),
     :schema_element => [
       ["result", "SunDawg::Responsys::TriggerResult[]", [1, nil]]
     ]

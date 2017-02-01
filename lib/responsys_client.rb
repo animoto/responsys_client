@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'member'
 require 'stub/defaultDriver.rb'
+require 'stub/hatmDriver.rb'
 require 'stub/defaultMappingRegistry.rb'
 
 module SunDawg
@@ -40,6 +41,8 @@ module SunDawg
         @keep_alive = options[:keep_alive]
         @responsys_client = ResponsysWS.new
         @responsys_client.wiredump_dev = options[:wiredump_dev] if options[:wiredump_dev]
+        @hatm_client = HATMResponsysWS.new
+        @hatm_client.wiredump_dev = options[:wiredump_dev] if options[:wiredump_dev]
 
         self.timeout_threshold = options[:timeout_threshold] || 180
       end
@@ -51,6 +54,10 @@ module SunDawg
         @responsys_client.options['protocol.http.send_timeout'] = secs
         @responsys_client.options['protocol.http.receive_timeout']  = secs
 
+        @hatm_client.options['protocol.http.connect_timeout'] = secs
+        @hatm_client.options['protocol.http.send_timeout'] = secs
+        @hatm_client.options['protocol.http.receive_timeout']  = secs
+
         @timeout_threshold = secs
       end
 
@@ -60,7 +67,9 @@ module SunDawg
           login_request.username = @username
           login_request.password = @password
           response = @responsys_client.login login_request
+          hatm_response = @hatm_client.login login_request
           @session_id = response.result.sessionId
+          @hatm_session_id = hatm_response.result.sessionId
           assign_session
         end
       end
@@ -68,15 +77,22 @@ module SunDawg
       def assign_session
         session_header_request = SessionHeader.new
         session_header_request.sessionId = @session_id
+
+        hatm_session_header_request = SessionHeader.new
+        hatm_session_header_request.sessionId = @hatm_session_id
+
         @responsys_client.headerhandler.add session_header_request
+        @hatm_client.headerhandler.add hatm_session_header_request
       end
 
       def logout
         begin
           logout_request = Logout.new
           @responsys_client.logout logout_request
+          @hatm_client.logout logout_request
         ensure
           @session_id = nil
+          @hatm_session_id = nil
         end
       end
 
@@ -237,6 +253,58 @@ module SunDawg
         end
       end
 
+      # TriggerResult[] = service.mergeTriggerEmail(RecordData recordData, ListMergeRule
+      # mergeRule, InteractObject campaign, TriggerData[] triggerData)
+
+      def ha_merge_trigger_email(folder_name, campaign_name, members, options)
+        if campaign_name.nil? || folder_name.nil?
+          raise  InvalidParams.new("Error: folder_name or campaign_name cannot be nil")
+        end
+
+        campaign_object = InteractObject.new
+        campaign_object.folderName = folder_name
+        campaign_object.objectName = campaign_name
+
+        list_merge_rule = ListMergeRule.new
+        list_merge_rule.insertOnNoMatch = true
+        list_merge_rule.updateOnMatch = UpdateOnMatch::REPLACE_ALL
+        list_merge_rule.matchColumnName1 = "CUSTOMER_ID_"
+
+        record_data = RecordData.new
+        record_data.fieldNames = SunDawg::Responsys::Member.responsys_fields(members.first.keys)
+        record_data.records = []
+        trigger_data = []
+
+        members.each_with_index do |member, i|
+          option_hash = options[i]
+
+          record = Record.new
+          record = member.values
+          record_data.records << record
+
+          trigger = TriggerData.new
+          trigger.optionalData = []
+
+          option_hash.each do |name, value|
+            optional_data = OptionalData.new
+            optional_data.name = name
+            optional_data.value = value
+            trigger.optionalData << optional_data
+          end
+
+          trigger_data << trigger
+        end
+
+        merge_trigger_email = HaMergeTriggerEmail.new
+        merge_trigger_email.recordData = record_data
+        merge_trigger_email.mergeRule = list_merge_rule
+        merge_trigger_email.campaign = campaign_object
+        merge_trigger_email.triggerData = trigger_data
+        with_session do
+          @hatm_client.haMergeTriggerEmail(merge_trigger_email)
+        end
+      end
+
       ####
         ##  users_data = [
         ##                 {:email => 'abc@animoto.com', :user_options => {:foo => :bar}},
@@ -322,7 +390,7 @@ module SunDawg
       def with_session
         begin
           with_timeout do
-            login if @session_id.nil?
+            login if @session_id.nil? || @hatm_session_id.nil?
           end
           with_application_error do
             with_timeout do
