@@ -4,7 +4,7 @@ require 'soap/rpc/driver'
 
 class ResponsysWS < ::SOAP::RPC::Driver
   # Sun - Changed from 8080 to 80 per Responsys
-  DefaultEndpointUrl = "https://ws5.responsys.net/webservices/services/ResponsysWSService"
+  DefaultEndpointUrl = "https://ws5t.responsys.net/webservices/services/ResponsysWSService"
 
   Methods = [
     [ "",
